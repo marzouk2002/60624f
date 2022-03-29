@@ -104,13 +104,15 @@ const Home = ({ user, logout }) => {
         setConversations((prev) => [newConvo, ...prev]);
       }
 
-      conversations.forEach((convo) => {
-        if (convo.id === message.conversationId) {
-          convo.messages.push(message);
-          convo.latestMessageText = message.text;
-        }
-      });
-      setConversations(conversations);
+      setConversations(conversations.map((convo) => {
+          const convCopy = {...convo}
+          if (convo.id === message.conversationId) {
+            convCopy.messages.push(message);
+            convCopy.latestMessageText = message.text;
+          }
+          return convCopy
+        })
+      );
     },
     [setConversations, conversations],
   );
