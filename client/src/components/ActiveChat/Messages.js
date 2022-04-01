@@ -1,20 +1,14 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box } from '@material-ui/core';
 import { SenderBubble, OtherUserBubble } from '.';
 import moment from 'moment';
 
 const Messages = (props) => {
-  const { otherUser, userId, messages } = props;
-
-  const sortedMessages =   useMemo(() => {
-    return messages.sort((msgA, msgB) => {
-      return  new Date(msgA.createdAt).getTime() - new Date(msgB.createdAt).getTime()
-    })
-  }, [ messages ])
+  const { messages, otherUser, userId } = props;
 
   return (
     <Box>
-      {sortedMessages.map((message) => {
+      {messages.map((message) => {
         const time = moment(message.createdAt).format('h:mm');
 
         return message.senderId === userId ? (

@@ -49,6 +49,11 @@ const Home = ({ user, logout }) => {
     setConversations((prev) => prev.filter((convo) => convo.id));
   };
 
+  const sortMessages = (messages) => {
+    return messages.slice().sort((msgA, msgB) => {
+      return  new Date(msgA.createdAt).getTime() - new Date(msgB.createdAt).getTime()
+    })
+  };
   const saveMessage = async (body) => {
     const { data } = await axios.post("/api/messages", body);
     return data;
@@ -79,8 +84,9 @@ const Home = ({ user, logout }) => {
 
   const addNewConvo = useCallback(
     (recipientId, message) => {
-      setConversations(conversations.map((convo) => {
-          const convCopy = convo
+      setConversations((prev) => {
+        return prev.map((convo) => {
+          const convCopy = {...convo}; 
           if (convo.otherUser.id === recipientId) {
             convCopy.messages.push(message);
             convCopy.latestMessageText = message.text;
@@ -88,7 +94,7 @@ const Home = ({ user, logout }) => {
           }
           return convCopy
         })
-      );
+      });
     },
     [setConversations, conversations],
   );
@@ -106,7 +112,8 @@ const Home = ({ user, logout }) => {
         setConversations((prev) => [newConvo, ...prev]);
       }
 
-      setConversations(conversations.map((convo) => {
+      setConversations((prev) => {
+        return prev.map((convo) => {
           const convCopy = {...convo}
           if (convo.id === message.conversationId) {
             convCopy.messages.push(message);
@@ -114,7 +121,7 @@ const Home = ({ user, logout }) => {
           }
           return convCopy
         })
-      );
+      });
     },
     [setConversations, conversations],
   );
@@ -185,7 +192,12 @@ const Home = ({ user, logout }) => {
     const fetchConversations = async () => {
       try {
         const { data } = await axios.get("/api/conversations");
-        setConversations(data);
+        const convos = data.map((convo) => {
+          const { messages } = convo;
+          const sortedMessages = sortMessages(messages);
+          return { ...convo, messages: sortedMessages };
+        })
+        setConversations(convos);
       } catch (error) {
         console.error(error);
       }
