@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { useButtonStyles, useFormStyles } from '../themes/hooks';
 import {
     makeStyles,
     Box,
@@ -9,7 +11,6 @@ import {
     Typography,
     InputAdornment
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -30,31 +31,6 @@ const useStyles = makeStyles(theme => ({
         rowGap: '38px'
     },
 
-    formControl: {
-        width: '100%',
-
-        '& .MuiInputLabel-asterisk': {
-            display: 'none',
-        }
-    },
-
-    
-    btn: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-        borderRadius: '3px',
-        padding: '18px 58px 14px 58px',
-        fontWeight: 'bold',
-        fontSize: '16px',
-        lineHeight: '24px',
-        marginTop: '22px',
-        fontFamily: theme.typography.fontFamily,
-
-        '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-        }
-    },
-
     forgotlink: {
         textDecoration: 'none',
         color: theme.palette.primary.main,
@@ -67,6 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 function LoginForm({ handleLogin }) {
     const classes = useStyles();
+    const buttonClasses = useButtonStyles();
+    const formClasses = useFormStyles();
 
     return (
         <>
@@ -78,7 +56,7 @@ function LoginForm({ handleLogin }) {
             </Typography>
             <form onSubmit={handleLogin}>
                 <Box className={classes.formContainer}>
-                    <FormControl required  className={classes.formControl}>
+                    <FormControl required  className={formClasses.formControl}>
                         <TextField
                             aria-label="username"
                             label="Username"
@@ -86,7 +64,7 @@ function LoginForm({ handleLogin }) {
                             type="text"
                         />
                     </FormControl>
-                    <FormControl required  className={classes.formControl}>
+                    <FormControl required  className={formClasses.formControl}>
                         <TextField
                             label="Password"
                             aria-label="password"
@@ -99,9 +77,11 @@ function LoginForm({ handleLogin }) {
                             }}
                         />
                     </FormControl>
-                    <Button type="submit" variant="contained" size="large" className={classes.btn}>
-                        Login
-                    </Button>
+                    <Box mt={'22px'}>
+                        <Button type="submit" variant="contained" size="large" className={buttonClasses.primary}>
+                            Login
+                        </Button>
+                    </Box>
                 </Box>
             </form>
         </>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useButtonStyles } from '../../themes/hooks';
 import {
     makeStyles,
     Typography,
@@ -15,7 +16,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        columnGap: '30px'
+        columnGap: '30px',
+        rowGap: '10px',
     },
 
     text: {
@@ -27,19 +29,11 @@ const useStyles = makeStyles(theme => ({
     link: {
         textDecoration: 'none'
     },
-
-    btn: {
-        fontFamily: theme.typography.fontFamily,
-        color: theme.palette.primary.main,
-        fontSize: theme.typography.fontSize,
-        backgroundColor: theme.palette.primary.contrastText,
-        boxShadow: '0px 2px 12px rgba(74, 106, 149, 0.2)',
-        padding: '16px 42px'
-    }
 }))
 
 const AuthMenu = ({ isLogin }) => {
     const classes = useStyles();
+    const buttonClasses = useButtonStyles();
 
     return (
         <Box
@@ -65,7 +59,7 @@ const AuthMenu = ({ isLogin }) => {
             >
                 <Button
                     variant="text"
-                    className={classes.btn}
+                    className={buttonClasses.secondary}
                 >
                     {isLogin ? 'Create account' : 'Login'}
                 </Button>

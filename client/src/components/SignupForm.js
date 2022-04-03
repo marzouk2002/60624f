@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useButtonStyles, useFormStyles } from '../themes/hooks';
 import {
     makeStyles,
     Box,
@@ -28,33 +29,12 @@ const useStyles = makeStyles(theme => ({
         maxWidth: '400px',
         rowGap: '40px'
     },
-
-    formControl: {
-        width: '100%',
-
-        '& .MuiInputLabel-asterisk': {
-            display: 'none',
-        }
-    },
-
-    btn: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-        borderRadius: '3px',
-        padding: '18px 53px 14px 54px',
-        fontWeight: 'bold',
-        fontSize: '16px',
-        lineHeight: '24px',
-        fontFamily: theme.typography.fontFamily,
-
-        '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-        }
-    }
 }));
 
 function SignupForm({ handleRegister, formErrorMessage }) {
     const classes = useStyles();
+    const buttonClasses = useButtonStyles();
+    const formClasses = useFormStyles();
 
     return (
         <>   
@@ -66,7 +46,7 @@ function SignupForm({ handleRegister, formErrorMessage }) {
             </Typography>
             <form onSubmit={handleRegister}>
                 <Box className={classes.formContainer}>
-                    <FormControl className={classes.formControl}>
+                    <FormControl className={formClasses.formControl}>
                         <TextField
                             aria-label="username"
                             label="Username"
@@ -75,7 +55,7 @@ function SignupForm({ handleRegister, formErrorMessage }) {
                             required
                         />
                     </FormControl>
-                    <FormControl className={classes.formControl}>
+                    <FormControl className={formClasses.formControl}>
                     <TextField
                         label="E-mail address"
                         aria-label="e-mail address"
@@ -84,7 +64,7 @@ function SignupForm({ handleRegister, formErrorMessage }) {
                         required
                     />
                     </FormControl>
-                    <FormControl className={classes.formControl} error={!!formErrorMessage.confirmPassword}>
+                    <FormControl className={formClasses.formControl} error={!!formErrorMessage.confirmPassword}>
                         <TextField
                             aria-label="password"
                             label="Password"
@@ -97,7 +77,7 @@ function SignupForm({ handleRegister, formErrorMessage }) {
                             {formErrorMessage.confirmPassword}
                         </FormHelperText>
                     </FormControl>
-                    <FormControl className={classes.formControl} error={!!formErrorMessage.confirmPassword}>
+                    <FormControl className={formClasses.formControl} error={!!formErrorMessage.confirmPassword}>
                         <TextField
                             label="Confirm Password"
                             aria-label="confirm password"
@@ -110,7 +90,7 @@ function SignupForm({ handleRegister, formErrorMessage }) {
                             {formErrorMessage.confirmPassword}
                         </FormHelperText>
                     </FormControl>
-                    <Button type="submit" variant="contained" size="large" className={classes.btn}>
+                    <Button type="submit" variant="contained" size="large" className={buttonClasses.primary}>
                         Create
                     </Button>
                 </Box>
