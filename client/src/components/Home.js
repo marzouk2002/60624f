@@ -49,6 +49,11 @@ const Home = ({ user, logout }) => {
     setConversations((prev) => prev.filter((convo) => convo.id));
   };
 
+  const sortMessages = (messages) => {
+    return messages.slice().sort((msgA, msgB) => {
+      return  new Date(msgA.createdAt).getTime() - new Date(msgB.createdAt).getTime()
+    })
+  };
   const saveMessage = async (body) => {
     const { data } = await axios.post("/api/messages", body);
     return data;
@@ -62,10 +67,9 @@ const Home = ({ user, logout }) => {
     });
   };
 
-  const postMessage = (body) => {
+  const postMessage = async (body) => {
     try {
-      const data = saveMessage(body);
-
+      const data = await saveMessage(body);
       if (!body.conversationId) {
         addNewConvo(body.recipientId, data.message);
       } else {
@@ -80,14 +84,18 @@ const Home = ({ user, logout }) => {
 
   const addNewConvo = useCallback(
     (recipientId, message) => {
-      conversations.forEach((convo) => {
-        if (convo.otherUser.id === recipientId) {
-          convo.messages.push(message);
-          convo.latestMessageText = message.text;
-          convo.id = message.conversationId;
-        }
+      setConversations((prev) => {
+        return prev.map((convo) => {
+          const convCopy = {...convo}; 
+          if (convo.otherUser.id === recipientId) {
+            const { messages } = convCopy;
+            convCopy.messages = [ ...messages, message ];
+            convCopy.latestMessageText = message.text;
+            convCopy.id = message.conversationId;
+          }
+          return convCopy
+        })
       });
-      setConversations(conversations);
     },
     [setConversations, conversations],
   );
@@ -105,13 +113,17 @@ const Home = ({ user, logout }) => {
         setConversations((prev) => [newConvo, ...prev]);
       }
 
-      conversations.forEach((convo) => {
-        if (convo.id === message.conversationId) {
-          convo.messages.push(message);
-          convo.latestMessageText = message.text;
-        }
+      setConversations((prev) => {
+        return prev.map((convo) => {
+          const convCopy = {...convo}
+          if (convo.id === message.conversationId) {
+            const { messages } = convCopy;
+            convCopy.messages = [ ...messages, message ];
+            convCopy.latestMessageText = message.text;
+          }
+          return convCopy
+        })
       });
-      setConversations(conversations);
     },
     [setConversations, conversations],
   );
@@ -182,7 +194,12 @@ const Home = ({ user, logout }) => {
     const fetchConversations = async () => {
       try {
         const { data } = await axios.get("/api/conversations");
-        setConversations(data);
+        const convos = data.map((convo) => {
+          const { messages } = convo;
+          const sortedMessages = sortMessages(messages);
+          return { ...convo, messages: sortedMessages };
+        })
+        setConversations(convos);
       } catch (error) {
         console.error(error);
       }
