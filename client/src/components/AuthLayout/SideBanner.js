@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 
   text : {
     fontFamily: theme.typography.fontFamily,
-    fontSize: '24px',
+    fontSize: '26px',
     lineHeight: '40px',
     textAlign: 'center',
     marginTop: '4vmin',

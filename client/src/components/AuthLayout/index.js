@@ -30,7 +30,19 @@ const AuthLayout = ({ children, isLogin }) => {
             <Grid item sm={7} xs={12}>
                 <Box className={classes.content}>
                     <AuthMenu isLogin={isLogin}/>
+                    <Box
+                        mx={{
+                            xs: '0',
+                            sm: '15px',
+                            md:'55px',
+                        }}
+                        mt={{
+                            xs: '20px',
+                            md: '86px'
+                        }}
+                    >  
                     { children }
+                    </Box>
                 </Box>
             </Grid>
         </Grid>
