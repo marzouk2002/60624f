@@ -48,10 +48,7 @@ const AuthMenu = ({ isLogin }) => {
                 xs: 'auto',
                 md: '0'
             }}
-            mb={{
-                xs: '20px',
-                md: '86px'
-            }}
+            
             flexDirection={{
                 xs: 'column',
                 sm: 'column',
