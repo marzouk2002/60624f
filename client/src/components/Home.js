@@ -88,7 +88,8 @@ const Home = ({ user, logout }) => {
         return prev.map((convo) => {
           const convCopy = {...convo}; 
           if (convo.otherUser.id === recipientId) {
-            convCopy.messages.slice().push(message);
+            const { messages } = convCopy;
+            convCopy.messages = [ ...messages, message ];
             convCopy.latestMessageText = message.text;
             convCopy.id = message.conversationId;
           }
