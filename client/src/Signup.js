@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthLayout from './components/AuthLayout';
-import SignupForm from './components/SignupForm';
+import AuthForm from './components/AuthForm';
 
 const Signup = ({ user, register }) => {
   const history = useHistory();
@@ -30,8 +30,10 @@ const Signup = ({ user, register }) => {
 
   return (
     <AuthLayout isLogin={false}>
-        <SignupForm 
-          handleRegister={handleRegister} formErrorMessage={formErrorMessage}
+        <AuthForm
+          isLogin={false}
+          handleSubmit={handleRegister}
+          formErrorMessage={formErrorMessage}
         />
     </AuthLayout>
   );

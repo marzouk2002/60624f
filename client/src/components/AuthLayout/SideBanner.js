@@ -45,6 +45,21 @@ const useStyles = makeStyles(theme => ({
     }
   },
 
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '70%',
+    [theme.breakpoints.up('xs')]: {
+      marginTop: 0
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginTop: '-100px'
+    },
+    
+  },
+
   text : {
     fontFamily: theme.typography.fontFamily,
     fontSize: '26px',
@@ -59,18 +74,7 @@ const SideBanner = () => {
 
   return (
     <Box className={classes.container}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        width={'70%'}
-        mx={'auto'}
-        mt={{
-          sm: '-100px',
-          sx: 0
-        }}
-      >
+      <Box className={classes.content}>
         <img src={chatSvg} width={67} alt='chat'/>
         <Typography className={classes.text}>Converse with anyone<br/> with any language</Typography>
       </Box>

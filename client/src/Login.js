@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthLayout from './components/AuthLayout';
-import LoginForm from './components/LoginForm';
+import AuthForm from './components/AuthForm';
 
 const Login = ({ user, login }) => {
   const history = useHistory();
@@ -22,7 +22,10 @@ const Login = ({ user, login }) => {
 
   return (
     <AuthLayout isLogin={true}>
-      <LoginForm handleLogin={handleLogin} />
+      <AuthForm
+        isLogin={true}
+        handleSubmit={handleLogin}
+      />
     </AuthLayout>
   );
 };

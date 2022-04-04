@@ -8,6 +8,7 @@ import {
     Button,
     Box,
 } from '@material-ui/core';
+import cx from 'classnames';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -59,7 +60,10 @@ const AuthMenu = ({ isLogin }) => {
             >
                 <Button
                     variant="text"
-                    className={buttonClasses.secondary}
+                    className={ isLogin ? 
+                        cx(buttonClasses.secondary, buttonClasses.secondaryLogin) :
+                        buttonClasses.secondary
+                    }
                 >
                     {isLogin ? 'Create account' : 'Login'}
                 </Button>
