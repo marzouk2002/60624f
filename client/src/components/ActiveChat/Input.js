@@ -30,6 +30,7 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
   const [images, setImages] = useState([]);
+  const [imagesUrl, setImagesUrl ] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
 
   const handleChange = (event) => {
@@ -44,13 +45,15 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formElements = form.elements;
-    const imageUrls = await uploadFiles(images);
-    console.log(imageUrls);
+    const imageUrlsHosted = await uploadFiles(images);
+    setImages([]);
+    setImagesUrl([]);
     const reqBody = {
       text: formElements.text.value,
       recipientId: otherUser.id,
       conversationId,
       sender: conversationId ? null : user,
+      attachments: imageUrlsHosted,
     };
     await postMessage(reqBody);
     setText('');
@@ -82,6 +85,8 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
         open={openPopup}
         setOpen={setOpenPopup}
         setImages={setImages}
+        setImagesUrl={setImagesUrl}
+        imagesUrl={imagesUrl}
       />
     </form>
   );

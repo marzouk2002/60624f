@@ -75,9 +75,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UploadPopup = (props) => {
-    const { open, setOpen, setImages } = props;
+    const { open, setOpen, setImages, imagesUrl, setImagesUrl } = props;
     const classes = useStyles();
-    const [ imagesUrl, setImagesUrl ] = useState([]);
+    
 
     const handleClose = () => {
         setOpen(false);
@@ -153,6 +153,8 @@ UploadPopup.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
     setImages: PropTypes.func.isRequired,
+    imagesUrl: PropTypes.array.isRequired,
+    setImagesUrl: PropTypes.func.isRequired,
 };
 
 export default UploadPopup;
