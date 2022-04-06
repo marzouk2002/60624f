@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { FormControl, FilledInput } from '@material-ui/core';
+import { 
+  FormControl,
+  IconButton,
+  FilledInput } from '@material-ui/core';
+import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import UploadPopup from './UploadDialog/UploadPopup';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,14 +18,25 @@ const useStyles = makeStyles(() => ({
     borderRadius: 8,
     marginBottom: 20,
   },
+
+  fileInput: {
+    marginRight: '10px',
+  }
+
 }));
 
 const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
+  const [ images, setImages ] = useState([]);
+  const [ openPopup, setOpenPopup ] = useState(false);
 
   const handleChange = (event) => {
     setText(event.target.value);
+  };
+
+  const handleClickPopup = () => {
+    setOpenPopup(true);
   };
 
   const handleSubmit = async (event) => {
@@ -48,8 +64,23 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
           value={text}
           name="text"
           onChange={handleChange}
+          endAdornment={
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickPopup}
+                className={classes.fileInput}
+                edge="end"
+              >
+                <InsertPhotoOutlinedIcon color={images.length ? 'primary' : 'inheret'}/>
+              </IconButton>
+          }
         />
       </FormControl>
+      <UploadPopup 
+        open={openPopup}
+        setOpen={setOpenPopup}
+        setImages={setImages}
+      />
     </form>
   );
 };
