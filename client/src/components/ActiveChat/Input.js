@@ -6,6 +6,7 @@ import {
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import UploadPopup from './UploadDialog/UploadPopup';
+import { uploadFiles } from '../../utils/functions/uploadFiles';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,8 +29,8 @@ const useStyles = makeStyles(() => ({
 const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
-  const [ images, setImages ] = useState([]);
-  const [ openPopup, setOpenPopup ] = useState(false);
+  const [images, setImages] = useState([]);
+  const [openPopup, setOpenPopup] = useState(false);
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -43,7 +44,8 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formElements = form.elements;
-    // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
+    const imageUrls = await uploadFiles(images);
+    console.log(imageUrls);
     const reqBody = {
       text: formElements.text.value,
       recipientId: otherUser.id,
@@ -71,7 +73,7 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
                 className={classes.fileInput}
                 edge="end"
               >
-                <InsertPhotoOutlinedIcon color={images.length ? 'primary' : 'inheret'}/>
+                <InsertPhotoOutlinedIcon color={images.length ? 'primary' : 'inherit'}/>
               </IconButton>
           }
         />

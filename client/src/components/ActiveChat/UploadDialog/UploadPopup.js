@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     input: {
-        width: '7rem',
+        width: '7.4rem',
         height: '2.6rem',
         cursor: 'pointer',
         position: 'relative',
@@ -55,6 +55,7 @@ const useStyles = makeStyles(theme => ({
             left: 0,
             fontSize: '1.3rem',
             color: '#FFF',
+            fontWeight: '600',
             display: 'grid',
             placeItems: 'center',
         }
@@ -77,8 +78,6 @@ const UploadPopup = (props) => {
     const { open, setOpen, setImages } = props;
     const classes = useStyles();
     const [ imagesUrl, setImagesUrl ] = useState([]);
-
-
 
     const handleClose = () => {
         setOpen(false);
@@ -128,7 +127,7 @@ const UploadPopup = (props) => {
                                 <CardMedia
                                     component="img"
                                     alt="selected image"
-                                    height="140"
+                                    height="150"
                                     image={url}
                                     title="Double click to remove"
                                     onDoubleClick={() => deleteFile(index)}
