@@ -9,18 +9,20 @@ const useStyles = makeStyles(() => ({
     root: {
         flex: '1 0 50%',
         maxWidth: '200px',
-        maxHeight: '200px',
     },
 
-    img: {
+    img: ({ isSender, roundBottom }) => ({
         width: '100%',
         height: '100%',
-    }
+        objectFit: 'cover',
+        borderRadius: isSender ? '15px 15px 0 15px' : '0px 15px 15px 15px', 
+        borderBottomLeftRadius: (roundBottom && isSender) ? '0' : '15px',
+    })
 
 }));
 
-const ImageCard = ({url}) => {
-    const classes = useStyles();
+const ImageCard = ({url, isSender, roundBottom}) => {
+    const classes = useStyles({ roundBottom, isSender });
     return (
         <Box className={classes.root}>
             <img src={url} alt="sent by user" className={classes.img}/>
@@ -29,7 +31,8 @@ const ImageCard = ({url}) => {
 };
 
 ImageCard.propTypes = {
-    url: PropTypes.string.isRequired
+    url: PropTypes.string.isRequired,
+    isSender: PropTypes.bool.isRequired,
 };
 
 export default ImageCard;

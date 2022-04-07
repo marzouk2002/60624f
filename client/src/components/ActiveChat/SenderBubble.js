@@ -9,12 +9,13 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'flex-end',
   },
-  date: {
+  date: props => ({
     fontSize: 11,
     color: '#BECCE2',
     fontWeight: 'bold',
     marginBottom: 5,
-  },
+    order: props.attachments.length > 1 ? 2 : -1,
+  }),
   text: {
     fontSize: 14,
     color: '#91A3C0',
@@ -25,11 +26,13 @@ const useStyles = makeStyles(() => ({
   bubble: {
     background: '#F4F6FA',
     borderRadius: '10px 10px 0 10px',
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
 const SenderBubble = ({ time, text, attachments }) => {
-  const classes = useStyles();
+  const classes = useStyles({ attachments });
 
   return (
     <Box className={classes.root}>
@@ -37,7 +40,11 @@ const SenderBubble = ({ time, text, attachments }) => {
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      <Images attachments={attachments}/>
+      <Images 
+        attachments={attachments}
+        roundBottom={attachments.length===1 && text.length > 0 }
+        isSender={true}
+      />
     </Box>
   );
 };
