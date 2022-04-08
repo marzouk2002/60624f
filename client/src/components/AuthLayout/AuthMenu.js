@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useButtonStyles } from '../../themes/hooks';
 import {
     makeStyles,
     Typography,
     Button,
     Box,
 } from '@material-ui/core';
-import cx from 'classnames';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -30,11 +27,23 @@ const useStyles = makeStyles(theme => ({
     link: {
         textDecoration: 'none'
     },
+
+    button: ({ isLogin }) => ({
+        fontFamily: theme.typography.fontFamily,
+        color: theme.palette.primary.main,
+        fontSize: theme.typography.fontSize,
+        width: isLogin ? '170px' : '140px',
+        height: '54px',
+        backgroundColor: theme.palette.primary.contrastText,
+        boxShadow: '0px 2px 12px rgba(74, 106, 149, 0.2)',
+        padding: isLogin ? '16px 33px 19px 34px' : '16px 51px 19px 52px',
+        borderRadius: '5px',
+        lineHeight: '19px',
+    }),
 }))
 
 const AuthMenu = ({ isLogin }) => {
-    const classes = useStyles();
-    const buttonClasses = useButtonStyles();
+    const classes = useStyles({ isLogin });
 
     return (
         <Box
@@ -54,26 +63,18 @@ const AuthMenu = ({ isLogin }) => {
                 {isLogin ? 'Don’t have an account?' : 'Already have an account?'}
             </Typography>
             <Link 
-                href={isLogin ? '/register' : '/login'}
                 to={isLogin ? '/register' : '/login'}
                 className={classes.link}
             >
                 <Button
                     variant="text"
-                    className={ isLogin ? 
-                        cx(buttonClasses.secondary, buttonClasses.secondaryLogin) :
-                        buttonClasses.secondary
-                    }
+                    className={classes.button}
                 >
                     {isLogin ? 'Create account' : 'Login'}
                 </Button>
             </Link>
         </Box>
     )
-};
-
-AuthMenu.propTypes = {
-    isLogin: PropTypes.bool.isRequired,
 };
 
 export default AuthMenu;

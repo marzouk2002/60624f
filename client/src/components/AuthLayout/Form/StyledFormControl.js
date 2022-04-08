@@ -1,6 +1,10 @@
-import { makeStyles } from "@material-ui/core";
+import React from 'react';
+import {
+    makeStyles,
+    FormControl,
+} from '@material-ui/core';
 
-const useFormStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
     formControl: {
         width: '100%',
         
@@ -38,4 +42,14 @@ const useFormStyles = makeStyles(theme => ({
     },
 }));
 
-export default useFormStyles;
+const StyledFormControl = ({children, ...props }) => {
+    const classes = useStyles();
+
+  return (
+    <FormControl className={classes.formControl} {...props}>
+        {children}
+    </FormControl>
+  )
+}
+
+export default StyledFormControl;

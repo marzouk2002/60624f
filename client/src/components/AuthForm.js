@@ -1,18 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useButtonStyles, useFormStyles } from '../themes/hooks';
 import {
     makeStyles,
     Box,
     Button,
-    FormControl,
     TextField,
     FormHelperText,
     Typography,
     InputAdornment
 } from '@material-ui/core';
-import cx from 'classnames';
+import StyledFormControl from './AuthLayout/Form/StyledFormControl';
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
@@ -44,13 +41,29 @@ const useStyles = makeStyles(theme => ({
         fontWeight: '600',
         fontFamily: theme.typography.fontFamily,
         lineHeight: '16px',
-    }
+    },
+
+    button: ({ isLogin }) => ({
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        borderRadius: '3px',
+        width: '160px',
+        height: '56px',
+        padding: isLogin ? '18px 58px 14px 58px' : '18px 53px 14px 54px',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        lineHeight: '24px',
+        fontFamily: theme.typography.fontFamily,
+        marginTop: isLogin ? '0px' : '22px',
+
+        '&:hover': {
+            backgroundColor: theme.palette.primary.light,
+        }
+    }),
 }));
 
 function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
-    const classes = useStyles();
-    const buttonClasses = useButtonStyles();
-    const formClasses = useFormStyles();
+    const classes = useStyles({ isLogin });
 
     return (
         <Box className={classes.wrapper}>   
@@ -62,7 +75,7 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
             </Typography>
             <form onSubmit={handleSubmit}>
                 <Box className={classes.formContainer}>
-                    <FormControl className={formClasses.formControl}>
+                    <StyledFormControl>
                         <TextField
                             aria-label="username"
                             label="Username"
@@ -70,10 +83,10 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
                             type="text"
                             required
                         />
-                    </FormControl>
+                    </StyledFormControl>
                     { 
                         !isLogin && 
-                            <FormControl className={formClasses.formControl}>
+                            <StyledFormControl>
                                 <TextField
                                     label="E-mail address"
                                     aria-label="e-mail address"
@@ -81,9 +94,9 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
                                     name="email"
                                     required
                                 />
-                            </FormControl>
+                            </StyledFormControl>
                     }
-                    <FormControl className={formClasses.formControl} error={!!formErrorMessage?.confirmPassword}>
+                    <StyledFormControl error={!!formErrorMessage?.confirmPassword}>
                         <TextField
                             aria-label="password"
                             label="Password"
@@ -91,23 +104,20 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
                             inputProps={{ minLength: 6 }}
                             name="password"
                             required
-                            InputProps={isLogin ? {
+                            InputProps={isLogin && {
                                 endAdornment: <InputAdornment position="end">
                                                     <Link to='#' className={classes.forgotlink}>Forgot?</Link>
                                                 </InputAdornment>,
-                            } : null }
+                            }}
                         />
                         <FormHelperText>
                             {formErrorMessage?.confirmPassword}
                         </FormHelperText>
-                    </FormControl>
+                    </StyledFormControl>
                     {
                     
                         !isLogin && 
-                            <FormControl 
-                                className={formClasses.formControl}
-                                error={!!formErrorMessage?.confirmPassword}
-                            >
+                            <StyledFormControl error={!!formErrorMessage?.confirmPassword}>
                                 <TextField
                                     label="Confirm Password"
                                     aria-label="confirm password"
@@ -119,13 +129,13 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
                                 <FormHelperText>
                                     {formErrorMessage?.confirmPassword}
                                 </FormHelperText>
-                            </FormControl>
+                            </StyledFormControl>
                     }
                     <Button 
                         type="submit" 
                         variant="contained"
                         size="large"
-                        className={isLogin ? cx(buttonClasses.primary, buttonClasses.primaryLogin) : buttonClasses.primary}
+                        className={classes.button}
                     >
                         {isLogin ? 'Login' : 'Create'}
                     </Button>
@@ -133,12 +143,6 @@ function AuthForm({ isLogin, handleSubmit, formErrorMessage }) {
             </form>
         </Box>
     )
-};
-
-AuthForm.propTypes = {
-    isLogin: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    formErrorMessage: PropTypes.object,
 };
 
 export default AuthForm;

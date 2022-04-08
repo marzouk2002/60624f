@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AuthMenu from './AuthMenu';
 import SideBanner from './SideBanner';
 import {
@@ -62,11 +61,6 @@ const AuthLayout = ({ children, isLogin }) => {
             </Grid>
         </Grid>
     )
-};
-
-AuthLayout.propTypes = {
-    children: PropTypes.node.isRequired,
-    isLogin: PropTypes.bool.isRequired,
 };
 
 export default AuthLayout;
