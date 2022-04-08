@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
     makeStyles,
     Box,
@@ -28,11 +27,6 @@ const ImageCard = ({url, isSender, roundBottom}) => {
             <img src={url} alt="sent by user" className={classes.img}/>
         </Box>
     )
-};
-
-ImageCard.propTypes = {
-    url: PropTypes.string.isRequired,
-    isSender: PropTypes.bool.isRequired,
 };
 
 export default ImageCard;

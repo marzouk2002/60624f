@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   makeStyles,
   Box
@@ -35,11 +34,6 @@ const Images = ({ attachments, isSender, roundBottom }) => {
   )
 };
 
-Images.propTypes = {
-  attachments: PropTypes.array.isRequired,
-  isSender: PropTypes.bool.isRequired,
-  roundBottom: PropTypes.bool.isRequired,
-};
 
 
 export default Images;

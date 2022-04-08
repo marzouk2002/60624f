@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     makeStyles,
     Dialog,
@@ -148,13 +147,5 @@ const UploadPopup = (props) => {
         </Dialog>
     );
 }
-
-UploadPopup.propTypes = {
-    open: PropTypes.bool.isRequired,
-    setOpen: PropTypes.func.isRequired,
-    setImages: PropTypes.func.isRequired,
-    imagesUrl: PropTypes.array.isRequired,
-    setImagesUrl: PropTypes.func.isRequired,
-};
 
 export default UploadPopup;
