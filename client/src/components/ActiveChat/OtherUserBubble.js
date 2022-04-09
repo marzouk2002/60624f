@@ -29,6 +29,7 @@ const useStyles = makeStyles(() => ({
   bubble: {
     backgroundImage: 'linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)',
     borderRadius: '0 10px 10px 10px',
+    width: 'max-content',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -59,11 +60,13 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
         {text.length ? <Box className={classes.bubble}>
           <Typography className={classes.text}>{text}</Typography>
         </Box> : ""}
-        <Images 
-          attachments={attachments}
-          roundBottom={attachments.length===1 && text.length > 0 }
-          isSender={false}
-        />
+        {
+          attachments && <Images 
+            attachments={attachments}
+            roundBottom={attachments.length===1 && text.length > 0 }
+            isSender={false}
+          />
+        }
       </Box>
     </Box>
   );

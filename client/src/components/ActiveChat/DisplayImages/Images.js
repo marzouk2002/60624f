@@ -21,10 +21,10 @@ const Images = ({ attachments, isSender, roundBottom }) => {
   return (
     <Box className={classes.root}>
       {
-        attachments.map((attachment, index) => (
+        attachments.map((attachment) => (
           <ImageCard 
             url={attachment}
-            key={index}
+            key={`url-${attachment}`}
             roundBottom={roundBottom}
             isSender={isSender}
           />

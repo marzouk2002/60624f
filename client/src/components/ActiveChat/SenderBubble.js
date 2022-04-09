@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     color: '#BECCE2',
     fontWeight: 'bold',
     marginBottom: 5,
-    order: props.attachments.length > 1 ? 2 : -1,
+    order: props.attachments?.length > 1 ? 2 : -1,
   }),
   text: {
     fontSize: 14,
@@ -40,11 +40,11 @@ const SenderBubble = ({ time, text, attachments }) => {
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      <Images 
+      {attachments && <Images 
         attachments={attachments}
         roundBottom={attachments.length===1 && text.length > 0 }
         isSender={true}
-      />
+      />}
     </Box>
   );
 };

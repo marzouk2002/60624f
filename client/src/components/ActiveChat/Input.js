@@ -30,8 +30,9 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
   const [images, setImages] = useState([]);
-  const [imagesUrl, setImagesUrl ] = useState([]);
+  const [imagesUrl, setImagesUrl] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -45,7 +46,10 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formElements = form.elements;
-    const imageUrlsHosted = await uploadFiles(images);
+    setUploading(true);
+    const response = await uploadFiles(images);
+    setUploading(false);
+    const imageUrlsHosted = response.map(({ data }) => data.secure_url);
     setImages([]);
     setImagesUrl([]);
     const reqBody = {
@@ -69,6 +73,7 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
           value={text}
           name="text"
           onChange={handleChange}
+          disabled={uploading}
           endAdornment={
               <IconButton
                 aria-label="toggle password visibility"

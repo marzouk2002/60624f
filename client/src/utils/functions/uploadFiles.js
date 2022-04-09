@@ -15,8 +15,7 @@ export function uploadFiles(files) {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("upload_preset", uploadPreset);
-            const { data } = await instance.post(url, formData, config, config);
-            return data.secure_url
+            return instance.post(url, formData, config, config);
         }
     ));
 }
