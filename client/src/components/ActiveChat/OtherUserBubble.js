@@ -57,9 +57,9 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
         <Typography className={classes.usernameDate}>
           {otherUser.username} {time}
         </Typography>
-        {text.length ? <Box className={classes.bubble}>
+        {(text.length > 0) && <Box className={classes.bubble}>
           <Typography className={classes.text}>{text}</Typography>
-        </Box> : ""}
+        </Box>}
         {
           attachments && <Images 
             attachments={attachments}
