@@ -78,4 +78,23 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.post('/:id/addUser/:user_id', async (req, res, next) => {
+  try {
+    // if (!req.user) {
+    //   return res.sendStatus(401);
+    // }
+    const { id, user_id } = req.params
+
+    const conversation = await Conversation.findByPk(id)
+
+    const otherUser = await User.findByPk(user_id)
+    
+    await conversation.addUser(otherUser)
+
+    res.json(conversation).status(200)
+  } catch (error) {
+    next(error);
+  }
+})
+
 module.exports = router;
