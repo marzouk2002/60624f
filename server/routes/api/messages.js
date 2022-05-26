@@ -22,17 +22,18 @@ router.post("/", async (req, res, next) => {
       return res.json({ message, sender });
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
-    let conversation = await Conversation.findConversation(
-      senderId,
-      recipientId,
-    );
+    // let conversation = await Conversation.findConversation(
+    //   senderId,
+    //   recipientId,
+    // );
+
+    let conversation = null
 
     if (!conversation) {
       // create conversation
-      conversation = await Conversation.create({
-        user1Id: senderId,
-        user2Id: recipientId,
-      });
+      conversation = await Conversation.create();
+      await conversation.addUsers([senderId, recipientId]);
+
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
       }
