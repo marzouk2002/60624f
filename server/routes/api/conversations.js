@@ -12,11 +12,6 @@ router.get("/", async (req, res, next) => {
     }
     const userId = req.user.id;
     const conversations = await Conversation.findAll({
-      through: {
-        where: {
-          userId: userId,
-        },
-      },
       attributes: ["id"],
       order: [[Message, "createdAt", "DESC"]],
       include: [
@@ -25,25 +20,38 @@ router.get("/", async (req, res, next) => {
           model: User,
           where: {
             id: {
-              [Op.not]: userId,
-            },
+              [Op.eq]: userId,
+            }
           },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
         },
       ],
     });
+  
 
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
-
+      const convOtherUsers = await convo.getUsers({
+        where: {
+          id: {
+            [Op.not]: userId
+          },
+          
+        },
+        attributes: ["id", "username", "photoUrl"],
+        required: false,
+      })
       // set property for online status of the other users
-      const { users } = convoJSON
-      convoJSON.otherUsers = users.map((user) => ({
-        ...user,
-        online: onlineUsers.includes(user.id)
-      }))
+
+      let otherUsers = convOtherUsers.map((user) => {
+        let userJSON = user.toJSON()
+        return ({
+          ...userJSON,
+          online: onlineUsers.includes(userJSON.id)
+        })
+      })
+      convoJSON.otherUsers = otherUsers
+      convoJSON.otherUser = otherUsers[0]
       delete convoJSON.users
 
       // set properties for notification count and latest message preview
