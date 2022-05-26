@@ -44,6 +44,7 @@ const ActiveChat = ({
           <Header
             username={conversation.otherUser.username}
             online={conversation.otherUser.online || false}
+            conversationId={conversation.id}
           />
           <Box className={classes.chatContainer}>
             {user && (

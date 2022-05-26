@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { 
+ Box,
+ Typography,
+ Menu,
+ MenuItem,
+ Fade
+} from '@material-ui/core';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import AddUserPopup from './AddUserDialog/AddUserPopup';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,11 +49,29 @@ const useStyles = makeStyles((theme) => ({
     color: '#95A7C4',
     marginRight: 24,
     opacity: 0.5,
+    cursor: 'pointer'
   },
 }));
 
-const Header = ({ username, online }) => {
+const Header = ({ username, online, conversationId }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false)
+  const menuOpen = Boolean(anchorEl);
+  
   const classes = useStyles();
+
+  const openMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const menuOptionOpen = () => {
+    setPopupOpen(true);
+    setAnchorEl(null);
+  }
 
   return (
     <Box className={classes.root}>
@@ -57,7 +82,25 @@ const Header = ({ username, online }) => {
           {online ? 'Online' : 'Offline'}
         </Typography>
       </Box>
-      <MoreHorizIcon classes={{ root: classes.ellipsis }} />
+      <MoreHorizIcon 
+        onClick={openMenu}
+        className={classes.ellipsis}
+      />
+      <Menu
+        id="fade-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={menuOpen}
+        onClose={closeMenu}
+        TransitionComponent={Fade}
+      >
+        <MenuItem onClick={menuOptionOpen}>Add User to Conversation</MenuItem>
+      </Menu>
+      <AddUserPopup
+        open={popupOpen}
+        setOpen={setPopupOpen}
+        conversationId={conversationId}
+      />
     </Box>
   );
 };
