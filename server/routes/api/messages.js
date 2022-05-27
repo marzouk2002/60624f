@@ -22,12 +22,10 @@ router.post("/", async (req, res, next) => {
       return res.json({ message, sender });
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
-    // let conversation = await Conversation.findConversation(
-    //   senderId,
-    //   recipientId,
-    // );
-
-    let conversation = null
+    let conversation = await Conversation.findConversation(
+      senderId,
+      recipientId,
+    );
 
     if (!conversation) {
       // create conversation
