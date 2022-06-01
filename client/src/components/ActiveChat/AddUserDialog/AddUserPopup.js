@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     makeStyles,
@@ -94,22 +94,22 @@ const AddUserPopup = (props) => {
     };
 
     const searchUsers = async (searchText) => {
-    try {
-        const { data } = await axios.get(`/api/users/${searchText}`);
-        setUsers(data);
-    } catch (error) {
-        console.error(error);
-    }
+        try {
+            if(searchText === '') {
+                setUsers([]);
+                return;
+            }
+            const { data } = await axios.get(`/api/users/${searchText}`);
+            setUsers(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleInputChange = async (event) => {
-        if (event.target.value === '') {
-          setUsers([]);
-          setSearchText('');
-          return;
-        }
-        await searchUsers(event.target.value);
-        setSearchText(event.target.value);
+        const { value } = event.target;
+        setSearchText(value);
+        await searchUsers(value);
     };
 
     const addToConv = async (userId, convId) => {
@@ -119,7 +119,12 @@ const AddUserPopup = (props) => {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
+
+    useEffect(() => {
+        setUsers([]);
+        setSearchText('');
+    }, [ open, setUsers, setSearchText]);
 
     return (
         <Dialog onClose={handleClose} open={open}  className={classes.root}>
@@ -132,6 +137,7 @@ const AddUserPopup = (props) => {
                         <FormControl fullWidth hiddenLabel>
                             <FilledInput
                             name="search"
+                            value={searchText}
                             onChange={handleInputChange}
                             classes={{ root: classes.filledInput, input: classes.input }}
                             disableUnderline
