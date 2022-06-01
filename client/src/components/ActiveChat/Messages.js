@@ -4,7 +4,13 @@ import { SenderBubble, OtherUserBubble } from '.';
 import moment from 'moment';
 
 const Messages = (props) => {
-  const { messages, otherUser, userId } = props;
+  const { messages, otherUsers, userId } = props;
+
+  const getOtherUser = (otherId) => {
+    return otherUsers.find(
+      (otherUser) => otherUser.id === otherId
+    );
+  };
 
   return (
     <Box>
@@ -18,7 +24,7 @@ const Messages = (props) => {
             key={message.id}
             text={message.text}
             time={time}
-            otherUser={otherUser}
+            otherUser={getOtherUser(message.senderId)}
             attachments={message.attachments}
           />
         );

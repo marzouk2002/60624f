@@ -29,10 +29,9 @@ router.post("/", async (req, res, next) => {
 
     if (!conversation) {
       // create conversation
-      conversation = await Conversation.create({
-        user1Id: senderId,
-        user2Id: recipientId,
-      });
+      conversation = await Conversation.create();
+      await conversation.addUsers([senderId, recipientId]);
+
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
       }

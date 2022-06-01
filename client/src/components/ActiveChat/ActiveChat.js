@@ -44,13 +44,14 @@ const ActiveChat = ({
           <Header
             username={conversation.otherUser.username}
             online={conversation.otherUser.online || false}
+            conversationId={conversation.id}
           />
           <Box className={classes.chatContainer}>
             {user && (
               <>
                 <Messages
                   messages={conversation.messages}
-                  otherUser={conversation.otherUser}
+                  otherUsers={conversation.otherUsers}
                   userId={user.id}
                 />
                 <Input

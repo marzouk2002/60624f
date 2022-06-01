@@ -12,60 +12,47 @@ router.get("/", async (req, res, next) => {
     }
     const userId = req.user.id;
     const conversations = await Conversation.findAll({
-      where: {
-        [Op.or]: {
-          user1Id: userId,
-          user2Id: userId,
-        },
-      },
       attributes: ["id"],
       order: [[Message, "createdAt", "DESC"]],
       include: [
         { model: Message, order: ["createdAt", "DESC"] },
         {
           model: User,
-          as: "user1",
           where: {
             id: {
-              [Op.not]: userId,
-            },
+              [Op.eq]: userId,
+            }
           },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
-        },
-        {
-          model: User,
-          as: "user2",
-          where: {
-            id: {
-              [Op.not]: userId,
-            },
-          },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
         },
       ],
     });
+  
 
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
+      const convOtherUsers = await convo.getUsers({
+        where: {
+          id: {
+            [Op.not]: userId
+          },
+          
+        },
+        attributes: ["id", "username", "photoUrl"],
+        required: false,
+      })
+      // set property for online status of the other users
 
-      // set a property "otherUser" so that frontend will have easier access
-      if (convoJSON.user1) {
-        convoJSON.otherUser = convoJSON.user1;
-        delete convoJSON.user1;
-      } else if (convoJSON.user2) {
-        convoJSON.otherUser = convoJSON.user2;
-        delete convoJSON.user2;
-      }
-
-      // set property for online status of the other user
-      if (onlineUsers.includes(convoJSON.otherUser.id)) {
-        convoJSON.otherUser.online = true;
-      } else {
-        convoJSON.otherUser.online = false;
-      }
+      let otherUsers = convOtherUsers.map((user) => {
+        let userJSON = user.toJSON()
+        return ({
+          ...userJSON,
+          online: onlineUsers.includes(userJSON.id)
+        })
+      })
+      convoJSON.otherUsers = otherUsers
+      convoJSON.otherUser = otherUsers[0]
+      delete convoJSON.users
 
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
@@ -77,5 +64,24 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post('/:id/addUser/:user_id', async (req, res, next) => {
+  try {
+    // if (!req.user) {
+    //   return res.sendStatus(401);
+    // }
+    const { id, user_id } = req.params
+
+    const conversation = await Conversation.findByPk(id)
+
+    const otherUser = await User.findByPk(user_id)
+    
+    await conversation.addUser(otherUser)
+
+    res.json(conversation).status(200)
+  } catch (error) {
+    next(error);
+  }
+})
 
 module.exports = router;
